@@ -8,8 +8,12 @@ import PromptPanel from './PromptPanel';
 import ThemePanel from './ThemePanel';
 import SmartSuggestionPanel from './SmartSuggestionPanel';
 import CodeMinifierPanel from './CodeMinifierPanel';
+import QuickActionsPanel from './QuickActionsPanel';
+import SmartTemplatesPanel from './SmartTemplatesPanel';
 import { useMessageNavigation } from '../hooks/useMessageNavigation';
 import { SearchResult } from '../services/SearchService';
+import { QuickAction } from '../services/QuickActionsService';
+import { SmartTemplate } from '../services/SmartTemplatesService';
 
 const MessageNavigator: React.FC = () => {
   const [isSearchVisible, setIsSearchVisible] = useState(false);
@@ -22,6 +26,8 @@ const MessageNavigator: React.FC = () => {
   const [isThemeVisible, setIsThemeVisible] = useState(false);
   const [isSmartSuggestionVisible, setIsSmartSuggestionVisible] = useState(false);
   const [isCodeMinifierVisible, setIsCodeMinifierVisible] = useState(false);
+  const [isQuickActionsVisible, setIsQuickActionsVisible] = useState(false);
+  const [isSmartTemplatesVisible, setIsSmartTemplatesVisible] = useState(false);
   const [suggestionContext, setSuggestionContext] = useState('');
 
   const handleSearch = () => {
@@ -73,6 +79,48 @@ const MessageNavigator: React.FC = () => {
     setIsCodeMinifierVisible(true);
   };
 
+  const handleQuickActions = () => {
+    setIsQuickActionsVisible(true);
+  };
+
+  const handleSmartTemplates = () => {
+    setIsSmartTemplatesVisible(true);
+  };
+
+  const handleQuickActionSelect = (action: QuickAction, generatedPrompt: string) => {
+    // Fill the ChatGPT input with the generated prompt
+    const inputElement = document.querySelector(
+      'textarea[placeholder*="Message"], textarea[placeholder*="message"], div[contenteditable="true"]'
+    ) as HTMLTextAreaElement | HTMLInputElement | HTMLElement;
+
+    if (inputElement) {
+      if ('value' in inputElement) {
+        (inputElement as HTMLTextAreaElement).value = generatedPrompt;
+        inputElement.dispatchEvent(new Event('input', { bubbles: true }));
+      } else if ('textContent' in inputElement) {
+        (inputElement as HTMLElement).textContent = generatedPrompt;
+        inputElement.dispatchEvent(new Event('input', { bubbles: true }));
+      }
+    }
+  };
+
+  const handleSmartTemplateSelect = (template: SmartTemplate, generatedPrompt: string) => {
+    // Fill the ChatGPT input with the generated prompt
+    const inputElement = document.querySelector(
+      'textarea[placeholder*="Message"], textarea[placeholder*="message"], div[contenteditable="true"]'
+    ) as HTMLTextAreaElement | HTMLInputElement | HTMLElement;
+
+    if (inputElement) {
+      if ('value' in inputElement) {
+        (inputElement as HTMLTextAreaElement).value = generatedPrompt;
+        inputElement.dispatchEvent(new Event('input', { bubbles: true }));
+      } else if ('textContent' in inputElement) {
+        (inputElement as HTMLElement).textContent = generatedPrompt;
+        inputElement.dispatchEvent(new Event('input', { bubbles: true }));
+      }
+    }
+  };
+
   const { userMessages, currentIndex, goToPrevious, goToNext, copyCurrentMessage, goToMessage } =
     useMessageNavigation(
       handleSearch,
@@ -81,7 +129,9 @@ const MessageNavigator: React.FC = () => {
       handlePrompt,
       handleTheme,
       handleSmartSuggestion,
-      handleCodeMinifier
+      handleCodeMinifier,
+      handleQuickActions,
+      handleSmartTemplates
     );
 
   const handleSearchClose = () => {
@@ -128,6 +178,8 @@ const MessageNavigator: React.FC = () => {
         onTheme={handleTheme}
         onSmartSuggestion={handleSmartSuggestion}
         onCodeMinifier={handleCodeMinifier}
+        onQuickActions={handleQuickActions}
+        onSmartTemplates={handleSmartTemplates}
       />
 
       {isSearchVisible && (
@@ -192,6 +244,22 @@ const MessageNavigator: React.FC = () => {
           isVisible={isCodeMinifierVisible}
           onClose={() => setIsCodeMinifierVisible(false)}
           initialContent={suggestionContext}
+        />
+      )}
+
+      {isQuickActionsVisible && (
+        <QuickActionsPanel
+          isVisible={isQuickActionsVisible}
+          onClose={() => setIsQuickActionsVisible(false)}
+          onActionSelect={handleQuickActionSelect}
+        />
+      )}
+
+      {isSmartTemplatesVisible && (
+        <SmartTemplatesPanel
+          isVisible={isSmartTemplatesVisible}
+          onClose={() => setIsSmartTemplatesVisible(false)}
+          onTemplateSelect={handleSmartTemplateSelect}
         />
       )}
     </>

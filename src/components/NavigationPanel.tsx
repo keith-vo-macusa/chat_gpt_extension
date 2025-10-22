@@ -16,6 +16,8 @@ interface NavigationPanelProps {
   onTheme: () => void;
   onSmartSuggestion: () => void;
   onCodeMinifier: () => void;
+  onQuickActions: () => void;
+  onSmartTemplates: () => void;
 }
 
 export const NavigationPanel: React.FC<NavigationPanelProps> = ({
@@ -31,6 +33,8 @@ export const NavigationPanel: React.FC<NavigationPanelProps> = ({
   onTheme,
   onSmartSuggestion,
   onCodeMinifier,
+  onQuickActions,
+  onSmartTemplates,
 }) => {
   return (
     <div className="chatgpt-message-navigator-panel">
@@ -191,6 +195,42 @@ export const NavigationPanel: React.FC<NavigationPanelProps> = ({
             fill="currentColor"
           >
             <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+            <path d="M8 8h8M8 12h8M8 16h5" />
+          </svg>
+        </NavigationButton>
+
+        {/* Quick Actions button */}
+        <NavigationButton
+          onClick={onQuickActions}
+          title="Quick Actions - Ctrl+Q"
+          disabled={false}
+          className="nav-button-quick-actions"
+        >
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="currentColor"
+          >
+            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+            <path d="M8 8h8M8 12h8M8 16h5" />
+          </svg>
+        </NavigationButton>
+
+        {/* Smart Templates button */}
+        <NavigationButton
+          onClick={onSmartTemplates}
+          title="Smart Templates - Ctrl+T"
+          disabled={false}
+          className="nav-button-templates"
+        >
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="currentColor"
+          >
+            <path d="M4 19.5A2.5 2.5 0 0 0 6.5 22h11a2.5 2.5 0 0 0 2.5-2.5v-11A2.5 2.5 0 0 0 17.5 6H10.414l-2.707-2.707A.997.997 0 0 0 7 2H6.5A2.5 2.5 0 0 0 4 4.5v15zM6.5 4H8l3 3h6.5a.5.5 0 0 1 .5.5V10H6V4.5a.5.5 0 0 1 .5-.5zm13 5.5V19.5a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H8l3 3h7.5a.5.5 0 0 1 .5.5z" />
             <path d="M8 8h8M8 12h8M8 16h5" />
           </svg>
         </NavigationButton>

@@ -13,7 +13,9 @@ export const useMessageNavigation = (
   onPrompt?: () => void,
   onTheme?: () => void,
   onSmartSuggestion?: () => void,
-  onCodeMinifier?: () => void
+  onCodeMinifier?: () => void,
+  onQuickActions?: () => void,
+  onSmartTemplates?: () => void
 ) => {
   const [state, setState] = useState<MessageNavigatorState>({
     userMessages: [],
@@ -172,12 +174,14 @@ export const useMessageNavigation = (
       onPrompt,
       onTheme,
       onSmartSuggestion,
-      onCodeMinifier
+      onCodeMinifier,
+      onQuickActions,
+      onSmartTemplates
     )
 
     keyboardHandler.current = createKeyboardHandler(shortcuts)
     document.addEventListener('keydown', keyboardHandler.current)
-  }, [state.userMessages, state.currentIndex, navigateToMessage, copyCurrentMessage, onSearch, onExport, onHistory, onPrompt, onTheme, onSmartSuggestion, onCodeMinifier])
+  }, [state.userMessages, state.currentIndex, navigateToMessage, copyCurrentMessage, onSearch, onExport, onHistory, onPrompt, onTheme, onSmartSuggestion, onCodeMinifier, onQuickActions, onSmartTemplates])
 
   // Setup keyboard shortcuts
   useEffect(() => {

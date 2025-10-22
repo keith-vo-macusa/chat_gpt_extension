@@ -30,6 +30,8 @@ export const KEYBOARD_SHORTCUTS = {
   S: 's',
   P: 'p',
   M: 'm',
+  Q: 'q',
+  T: 't',
   ESC: 'Escape'
 } as const
 

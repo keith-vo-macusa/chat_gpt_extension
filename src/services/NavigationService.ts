@@ -12,7 +12,9 @@ export class NavigationService {
     onPrompt?: () => void,
     onTheme?: () => void,
     onSmartSuggestion?: () => void,
-    onCodeMinifier?: () => void
+    onCodeMinifier?: () => void,
+    onQuickActions?: () => void,
+    onSmartTemplates?: () => void
   ): KeyboardShortcut[] {
     return [
       {
@@ -94,6 +96,18 @@ export class NavigationService {
         ctrlKey: true,
         action: onCodeMinifier,
         description: 'Open code minifier'
+      }] : []),
+      ...(onQuickActions ? [{
+        key: 'q',
+        ctrlKey: true,
+        action: onQuickActions,
+        description: 'Open quick actions'
+      }] : []),
+      ...(onSmartTemplates ? [{
+        key: 't',
+        ctrlKey: true,
+        action: onSmartTemplates,
+        description: 'Open smart templates'
       }] : [])
     ]
   }
