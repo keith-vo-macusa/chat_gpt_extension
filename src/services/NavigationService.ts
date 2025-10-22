@@ -6,7 +6,9 @@ export class NavigationService {
     currentIndex: number,
     onNavigate: (index: number) => void,
     onCopy: () => void,
-    onSearch?: () => void
+    onSearch?: () => void,
+    onExport?: () => void,
+    onHistory?: () => void
   ): KeyboardShortcut[] {
     return [
       {
@@ -52,6 +54,18 @@ export class NavigationService {
         ctrlKey: true,
         action: onSearch,
         description: 'Open search panel'
+      }] : []),
+      ...(onExport ? [{
+        key: 'e',
+        ctrlKey: true,
+        action: onExport,
+        description: 'Open export panel'
+      }] : []),
+      ...(onHistory ? [{
+        key: 'h',
+        ctrlKey: true,
+        action: onHistory,
+        description: 'Open history panel'
       }] : [])
     ]
   }

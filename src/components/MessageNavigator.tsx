@@ -2,6 +2,8 @@ import React, { useState } from 'react'
 import { NavigationPanel } from './NavigationPanel'
 import { SearchPanel } from './SearchPanel'
 import { SearchResults } from './SearchResults'
+import { ExportPanel } from './ExportPanel'
+import { HistoryPanel } from './HistoryPanel'
 import { useMessageNavigation } from '../hooks/useMessageNavigation'
 import { SearchResult } from '../services/SearchService'
 
@@ -10,9 +12,19 @@ const MessageNavigator: React.FC = () => {
   const [searchResults, setSearchResults] = useState<SearchResult[]>([])
   const [currentSearchIndex, setCurrentSearchIndex] = useState(0)
   const [showSearchResults, setShowSearchResults] = useState(false)
+  const [isExportVisible, setIsExportVisible] = useState(false)
+  const [isHistoryVisible, setIsHistoryVisible] = useState(false)
 
   const handleSearch = () => {
     setIsSearchVisible(true)
+  }
+
+  const handleExport = () => {
+    setIsExportVisible(true)
+  }
+
+  const handleHistory = () => {
+    setIsHistoryVisible(true)
   }
 
   const {
@@ -22,7 +34,7 @@ const MessageNavigator: React.FC = () => {
     goToNext,
     copyCurrentMessage,
     goToMessage,
-  } = useMessageNavigation(handleSearch)
+  } = useMessageNavigation(handleSearch, handleExport, handleHistory)
 
   const handleSearchClose = () => {
     setIsSearchVisible(false)
@@ -48,6 +60,11 @@ const MessageNavigator: React.FC = () => {
     handleSearchResultSelect(result)
   }
 
+  const handleHistoryMessageSelect = (index: number) => {
+    goToMessage(index)
+    setIsHistoryVisible(false)
+  }
+
   return (
     <>
       <NavigationPanel
@@ -57,6 +74,8 @@ const MessageNavigator: React.FC = () => {
         onNext={goToNext}
         onCopy={copyCurrentMessage}
         onSearch={handleSearch}
+        onExport={handleExport}
+        onHistory={handleHistory}
       />
 
       {isSearchVisible && (
@@ -74,6 +93,23 @@ const MessageNavigator: React.FC = () => {
           currentIndex={currentSearchIndex}
           onResultSelect={handleSearchResultClick}
           onClose={() => setShowSearchResults(false)}
+        />
+      )}
+
+      {isExportVisible && (
+        <ExportPanel
+          userMessages={userMessages}
+          isVisible={isExportVisible}
+          onClose={() => setIsExportVisible(false)}
+        />
+      )}
+
+      {isHistoryVisible && (
+        <HistoryPanel
+          userMessages={userMessages}
+          isVisible={isHistoryVisible}
+          onClose={() => setIsHistoryVisible(false)}
+          onMessageSelect={handleHistoryMessageSelect}
         />
       )}
     </>

@@ -10,6 +10,8 @@ interface NavigationPanelProps {
   onNext: () => void
   onCopy: () => void
   onSearch: () => void
+  onExport: () => void
+  onHistory: () => void
 }
 
 export const NavigationPanel: React.FC<NavigationPanelProps> = ({
@@ -18,7 +20,9 @@ export const NavigationPanel: React.FC<NavigationPanelProps> = ({
   onPrevious,
   onNext,
   onCopy,
-  onSearch
+  onSearch,
+  onExport,
+  onHistory
 }) => {
   return (
     <div className="chatgpt-message-navigator-panel">
@@ -64,6 +68,29 @@ export const NavigationPanel: React.FC<NavigationPanelProps> = ({
           className="nav-button-search"
         >
           🔍
+        </NavigationButton>
+      </div>
+
+      {/* Feature buttons */}
+      <div className="feature-buttons-group">
+        {/* Export button */}
+        <NavigationButton
+          onClick={onExport}
+          title="Export messages - Ctrl+E"
+          disabled={userMessages.length === 0}
+          className="nav-button-export"
+        >
+          📤
+        </NavigationButton>
+
+        {/* History button */}
+        <NavigationButton
+          onClick={onHistory}
+          title="View history - Ctrl+H"
+          disabled={userMessages.length === 0}
+          className="nav-button-history"
+        >
+          📚
         </NavigationButton>
       </div>
 
