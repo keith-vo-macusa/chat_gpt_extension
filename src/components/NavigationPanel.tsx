@@ -9,6 +9,7 @@ interface NavigationPanelProps {
   onPrevious: () => void
   onNext: () => void
   onCopy: () => void
+  onSearch: () => void
 }
 
 export const NavigationPanel: React.FC<NavigationPanelProps> = ({
@@ -16,7 +17,8 @@ export const NavigationPanel: React.FC<NavigationPanelProps> = ({
   currentIndex,
   onPrevious,
   onNext,
-  onCopy
+  onCopy,
+  onSearch
 }) => {
   return (
     <div className="chatgpt-message-navigator-panel">
@@ -53,6 +55,16 @@ export const NavigationPanel: React.FC<NavigationPanelProps> = ({
             📄
           </NavigationButton>
         )}
+
+        {/* Search button */}
+        <NavigationButton
+          onClick={onSearch}
+          title="Search messages - Ctrl+F"
+          disabled={false}
+          className="nav-button-search"
+        >
+          🔍
+        </NavigationButton>
       </div>
 
       {/* Message counter */}

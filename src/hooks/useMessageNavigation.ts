@@ -6,7 +6,7 @@ import { CopyService } from '../services/CopyService'
 import { NavigationService } from '../services/NavigationService'
 import { createKeyboardHandler } from '../utils/keyboard'
 
-export const useMessageNavigation = () => {
+export const useMessageNavigation = (onSearch?: () => void) => {
   const [state, setState] = useState<MessageNavigatorState>({
     userMessages: [],
     currentIndex: 0,
@@ -157,12 +157,13 @@ export const useMessageNavigation = () => {
       state.userMessages,
       state.currentIndex,
       navigateToMessage,
-      copyCurrentMessage
+      copyCurrentMessage,
+      onSearch
     )
 
     keyboardHandler.current = createKeyboardHandler(shortcuts)
     document.addEventListener('keydown', keyboardHandler.current)
-  }, [state.userMessages, state.currentIndex, navigateToMessage, copyCurrentMessage])
+  }, [state.userMessages, state.currentIndex, navigateToMessage, copyCurrentMessage, onSearch])
 
   // Setup keyboard shortcuts
   useEffect(() => {
@@ -182,6 +183,7 @@ export const useMessageNavigation = () => {
     ...state,
     goToPrevious,
     goToNext,
-    copyCurrentMessage
+    copyCurrentMessage,
+    goToMessage: navigateToMessage
   }
 }

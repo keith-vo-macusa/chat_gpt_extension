@@ -10,3 +10,11 @@ export interface MessageNavigatorState {
   isVisible: boolean
   bookmarks: Set<number>
 }
+
+export interface SearchState {
+  isVisible: boolean
+  query: string
+  results: any[]
+  currentIndex: number
+  showResults: boolean
+}

@@ -5,6 +5,7 @@ Chrome extension để điều hướng giữa các tin nhắn của người d�
 ## Tính năng
 
 - ⬆️⬇️ **Điều hướng**: Di chuyển lên/xuống giữa các tin nhắn của bạn
+- 🔍 **Tìm kiếm**: Tìm kiếm tin nhắn với tùy chọn nâng cao
 - 🎯 **Highlight**: Làm nổi bật tin nhắn hiện tại
 - 📋 **Copy**: Sao chép tin nhắn vào clipboard
 - 📊 **Đếm tin nhắn**: Hiển thị số thứ tự tin nhắn
@@ -33,7 +34,14 @@ Chrome extension để điều hướng giữa các tin nhắn của người d�
 1. Mở ChatGPT và bắt đầu một cuộc hội thoại
 2. Extension sẽ tự động xuất hiện ở góc phải màn hình
 3. Sử dụng các nút ⬆️⬇️ để di chuyển giữa các tin nhắn
-4. Click "📋 Copy Message" để sao chép tin nhắn hiện tại
+4. Click "🔍 Search" để tìm kiếm tin nhắn
+5. Click "📋 Copy Message" để sao chép tin nhắn hiện tại
+
+### Phím tắt
+- `Ctrl+F`: Mở tìm kiếm
+- `Ctrl+↑/↓`: Điều hướng tin nhắn
+- `Ctrl+C`: Copy tin nhắn hiện tại
+- `Esc`: Đóng tìm kiếm
 
 ## Cấu trúc dự án
 

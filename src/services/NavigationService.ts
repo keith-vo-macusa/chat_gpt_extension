@@ -5,7 +5,8 @@ export class NavigationService {
     userMessages: any[],
     currentIndex: number,
     onNavigate: (index: number) => void,
-    onCopy: () => void
+    onCopy: () => void,
+    onSearch?: () => void
   ): KeyboardShortcut[] {
     return [
       {
@@ -45,7 +46,13 @@ export class NavigationService {
         ctrlKey: true,
         action: () => onNavigate(userMessages.length - 1),
         description: 'Go to last message'
-      }
+      },
+      ...(onSearch ? [{
+        key: 'f',
+        ctrlKey: true,
+        action: onSearch,
+        description: 'Open search panel'
+      }] : [])
     ]
   }
 }
