@@ -9,7 +9,9 @@ export class NavigationService {
     onSearch?: () => void,
     onExport?: () => void,
     onHistory?: () => void,
-    onPrompt?: () => void
+    onPrompt?: () => void,
+    onTheme?: () => void,
+    onSmartSuggestion?: () => void
   ): KeyboardShortcut[] {
     return [
       {
@@ -73,6 +75,18 @@ export class NavigationService {
         ctrlKey: true,
         action: onPrompt,
         description: 'Open prompt manager'
+      }] : []),
+      ...(onTheme ? [{
+        key: 't',
+        ctrlKey: true,
+        action: onTheme,
+        description: 'Open theme settings'
+      }] : []),
+      ...(onSmartSuggestion ? [{
+        key: 's',
+        ctrlKey: true,
+        action: onSmartSuggestion,
+        description: 'Open smart suggestions'
       }] : [])
     ]
   }

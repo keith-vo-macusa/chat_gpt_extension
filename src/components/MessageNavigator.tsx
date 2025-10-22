@@ -1,75 +1,95 @@
-import React, { useState } from 'react'
-import { NavigationPanel } from './NavigationPanel'
-import { SearchPanel } from './SearchPanel'
-import { SearchResults } from './SearchResults'
-import { ExportPanel } from './ExportPanel'
-import { HistoryPanel } from './HistoryPanel'
-import PromptPanel from './PromptPanel'
-import { useMessageNavigation } from '../hooks/useMessageNavigation'
-import { SearchResult } from '../services/SearchService'
+import React, { useState } from 'react';
+import { NavigationPanel } from './NavigationPanel';
+import { SearchPanel } from './SearchPanel';
+import { SearchResults } from './SearchResults';
+import { ExportPanel } from './ExportPanel';
+import { HistoryPanel } from './HistoryPanel';
+import PromptPanel from './PromptPanel';
+import ThemePanel from './ThemePanel';
+import SmartSuggestionPanel from './SmartSuggestionPanel';
+import { useMessageNavigation } from '../hooks/useMessageNavigation';
+import { SearchResult } from '../services/SearchService';
 
 const MessageNavigator: React.FC = () => {
-  const [isSearchVisible, setIsSearchVisible] = useState(false)
-  const [searchResults, setSearchResults] = useState<SearchResult[]>([])
-  const [currentSearchIndex, setCurrentSearchIndex] = useState(0)
-  const [showSearchResults, setShowSearchResults] = useState(false)
-  const [isExportVisible, setIsExportVisible] = useState(false)
-  const [isHistoryVisible, setIsHistoryVisible] = useState(false)
-  const [isPromptVisible, setIsPromptVisible] = useState(false)
+  const [isSearchVisible, setIsSearchVisible] = useState(false);
+  const [searchResults, setSearchResults] = useState<SearchResult[]>([]);
+  const [currentSearchIndex, setCurrentSearchIndex] = useState(0);
+  const [showSearchResults, setShowSearchResults] = useState(false);
+  const [isExportVisible, setIsExportVisible] = useState(false);
+  const [isHistoryVisible, setIsHistoryVisible] = useState(false);
+  const [isPromptVisible, setIsPromptVisible] = useState(false);
+  const [isThemeVisible, setIsThemeVisible] = useState(false);
+  const [isSmartSuggestionVisible, setIsSmartSuggestionVisible] = useState(false);
+  const [suggestionContext, setSuggestionContext] = useState('');
 
   const handleSearch = () => {
-    setIsSearchVisible(true)
-  }
+    setIsSearchVisible(true);
+  };
 
   const handleExport = () => {
-    setIsExportVisible(true)
-  }
+    setIsExportVisible(true);
+  };
 
   const handleHistory = () => {
-    setIsHistoryVisible(true)
-  }
+    setIsHistoryVisible(true);
+  };
 
   const handlePrompt = () => {
-    setIsPromptVisible(true)
-  }
+    setIsPromptVisible(true);
+  };
 
-  const {
-    userMessages,
-    currentIndex,
-    goToPrevious,
-    goToNext,
-    copyCurrentMessage,
-    goToMessage,
-  } = useMessageNavigation(handleSearch, handleExport, handleHistory, handlePrompt)
+  const handleTheme = () => {
+    setIsThemeVisible(true);
+  };
+
+  const handleSmartSuggestion = () => {
+    // Get current context from ChatGPT input
+    const inputElement = document.querySelector(
+      'textarea[placeholder*="Message"], textarea[placeholder*="message"], div[contenteditable="true"]'
+    ) as HTMLTextAreaElement | HTMLInputElement | HTMLElement;
+    const context = inputElement ? inputElement.value || inputElement.textContent || '' : '';
+    setSuggestionContext(context);
+    setIsSmartSuggestionVisible(true);
+  };
+
+  const { userMessages, currentIndex, goToPrevious, goToNext, copyCurrentMessage, goToMessage } =
+    useMessageNavigation(
+      handleSearch,
+      handleExport,
+      handleHistory,
+      handlePrompt,
+      handleTheme,
+      handleSmartSuggestion
+    );
 
   const handleSearchClose = () => {
-    setIsSearchVisible(false)
-    setShowSearchResults(false)
-    setSearchResults([])
-  }
+    setIsSearchVisible(false);
+    setShowSearchResults(false);
+    setSearchResults([]);
+  };
 
   const handleSearchResultSelect = (result: SearchResult) => {
     // Navigate to the selected message
-    goToMessage(result.message.index)
-    setIsSearchVisible(false)
-    setShowSearchResults(false)
-  }
+    goToMessage(result.message.index);
+    setIsSearchVisible(false);
+    setShowSearchResults(false);
+  };
 
   const handleSearchResults = (results: SearchResult[]) => {
-    setSearchResults(results)
-    setCurrentSearchIndex(0)
-    setShowSearchResults(true)
-  }
+    setSearchResults(results);
+    setCurrentSearchIndex(0);
+    setShowSearchResults(true);
+  };
 
   const handleSearchResultClick = (result: SearchResult, index: number) => {
-    setCurrentSearchIndex(index)
-    handleSearchResultSelect(result)
-  }
+    setCurrentSearchIndex(index);
+    handleSearchResultSelect(result);
+  };
 
   const handleHistoryMessageSelect = (index: number) => {
-    goToMessage(index)
-    setIsHistoryVisible(false)
-  }
+    goToMessage(index);
+    setIsHistoryVisible(false);
+  };
 
   return (
     <>
@@ -83,6 +103,8 @@ const MessageNavigator: React.FC = () => {
         onExport={handleExport}
         onHistory={handleHistory}
         onPrompt={handlePrompt}
+        onTheme={handleTheme}
+        onSmartSuggestion={handleSmartSuggestion}
       />
 
       {isSearchVisible && (
@@ -126,8 +148,23 @@ const MessageNavigator: React.FC = () => {
           onClose={() => setIsPromptVisible(false)}
         />
       )}
-    </>
-  )
-}
 
-export default MessageNavigator
+      {isThemeVisible && (
+        <ThemePanel
+          isVisible={isThemeVisible}
+          onClose={() => setIsThemeVisible(false)}
+        />
+      )}
+
+      {isSmartSuggestionVisible && (
+        <SmartSuggestionPanel
+          isVisible={isSmartSuggestionVisible}
+          onClose={() => setIsSmartSuggestionVisible(false)}
+          context={suggestionContext}
+        />
+      )}
+    </>
+  );
+};
+
+export default MessageNavigator;

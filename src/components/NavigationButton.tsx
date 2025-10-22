@@ -1,11 +1,11 @@
-import React from 'react'
+import React from "react";
 
 interface NavigationButtonProps {
-  onClick: () => void
-  disabled: boolean
-  title: string
-  children: React.ReactNode
-  className?: string
+  onClick: () => void;
+  disabled: boolean;
+  title: string;
+  children: React.ReactNode;
+  className?: string;
 }
 
 export const NavigationButton: React.FC<NavigationButtonProps> = ({
@@ -13,7 +13,7 @@ export const NavigationButton: React.FC<NavigationButtonProps> = ({
   disabled,
   title,
   children,
-  className = ''
+  className = "",
 }) => {
   return (
     <button
@@ -24,5 +24,5 @@ export const NavigationButton: React.FC<NavigationButtonProps> = ({
     >
       {children}
     </button>
-  )
-}
+  );
+};

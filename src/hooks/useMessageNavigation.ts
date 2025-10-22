@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from 'react'
-import { UserMessage, MessageNavigatorState } from '../types'
+import { MessageNavigatorState } from '../types'
 import { MessageService } from '../services/MessageService'
 import { HighlightService } from '../services/HighlightService'
 import { CopyService } from '../services/CopyService'
@@ -10,7 +10,9 @@ export const useMessageNavigation = (
   onSearch?: () => void,
   onExport?: () => void,
   onHistory?: () => void,
-  onPrompt?: () => void
+  onPrompt?: () => void,
+  onTheme?: () => void,
+  onSmartSuggestion?: () => void
 ) => {
   const [state, setState] = useState<MessageNavigatorState>({
     userMessages: [],
@@ -28,7 +30,7 @@ export const useMessageNavigation = (
 
   // Update messages when page changes
   useEffect(() => {
-    let debounceTimer: NodeJS.Timeout | null = null
+    let debounceTimer: number | null = null
 
     const updateMessages = (isInitial = false) => {
       // Clear previous debounce timer
@@ -166,12 +168,14 @@ export const useMessageNavigation = (
       onSearch,
       onExport,
       onHistory,
-      onPrompt
+      onPrompt,
+      onTheme,
+      onSmartSuggestion
     )
 
     keyboardHandler.current = createKeyboardHandler(shortcuts)
     document.addEventListener('keydown', keyboardHandler.current)
-  }, [state.userMessages, state.currentIndex, navigateToMessage, copyCurrentMessage, onSearch, onExport, onHistory, onPrompt])
+  }, [state.userMessages, state.currentIndex, navigateToMessage, copyCurrentMessage, onSearch, onExport, onHistory, onPrompt, onTheme, onSmartSuggestion])
 
   // Setup keyboard shortcuts
   useEffect(() => {

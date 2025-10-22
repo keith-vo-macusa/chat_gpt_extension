@@ -1,17 +1,17 @@
-import React from 'react'
+import React from "react";
 
 interface MessageCounterProps {
-  currentIndex: number
-  totalMessages: number
-  isLoading?: boolean
+  currentIndex: number;
+  totalMessages: number;
+  isLoading?: boolean;
 }
 
 export const MessageCounter: React.FC<MessageCounterProps> = ({
   currentIndex,
   totalMessages,
-  isLoading = false
+  isLoading = false,
 }) => {
-  if (totalMessages === 0 && !isLoading) return null
+  if (totalMessages === 0 && !isLoading) return null;
 
   return (
     <div className="message-counter-floating">
@@ -21,5 +21,5 @@ export const MessageCounter: React.FC<MessageCounterProps> = ({
         `${currentIndex + 1}/${totalMessages}`
       )}
     </div>
-  )
-}
+  );
+};

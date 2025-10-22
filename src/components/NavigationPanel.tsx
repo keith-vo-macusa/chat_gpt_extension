@@ -1,18 +1,20 @@
-import React from 'react'
-import { NavigationButton } from './NavigationButton'
-import { MessageCounter } from './MessageCounter'
-import { UserMessage } from '../types'
+import React from 'react';
+import { NavigationButton } from './NavigationButton';
+import { MessageCounter } from './MessageCounter';
+import { UserMessage } from '../types';
 
 interface NavigationPanelProps {
-  userMessages: UserMessage[]
-  currentIndex: number
-  onPrevious: () => void
-  onNext: () => void
-  onCopy: () => void
-  onSearch: () => void
-  onExport: () => void
-  onHistory: () => void
-  onPrompt: () => void
+  userMessages: UserMessage[];
+  currentIndex: number;
+  onPrevious: () => void;
+  onNext: () => void;
+  onCopy: () => void;
+  onSearch: () => void;
+  onExport: () => void;
+  onHistory: () => void;
+  onPrompt: () => void;
+  onTheme: () => void;
+  onSmartSuggestion: () => void;
 }
 
 export const NavigationPanel: React.FC<NavigationPanelProps> = ({
@@ -24,7 +26,9 @@ export const NavigationPanel: React.FC<NavigationPanelProps> = ({
   onSearch,
   onExport,
   onHistory,
-  onPrompt
+  onPrompt,
+  onTheme,
+  onSmartSuggestion,
 }) => {
   return (
     <div className="chatgpt-message-navigator-panel">
@@ -37,8 +41,13 @@ export const NavigationPanel: React.FC<NavigationPanelProps> = ({
           title={`Older message (${currentIndex + 1}/${userMessages.length}) - Ctrl+↑`}
           className="nav-button-prev"
         >
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M12 8l-6 6h12z"/>
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="currentColor"
+          >
+            <path d="M12 8l-6 6h12z" />
           </svg>
         </NavigationButton>
 
@@ -49,8 +58,13 @@ export const NavigationPanel: React.FC<NavigationPanelProps> = ({
           title={`Newer message (${currentIndex + 1}/${userMessages.length}) - Ctrl+↓`}
           className="nav-button-next"
         >
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M12 16l6-6H6z"/>
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="currentColor"
+          >
+            <path d="M12 16l6-6H6z" />
           </svg>
         </NavigationButton>
 
@@ -75,10 +89,35 @@ export const NavigationPanel: React.FC<NavigationPanelProps> = ({
           disabled={false}
           className="nav-button-search"
         >
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-            <circle cx="11" cy="11" r="7" stroke="none"/>
-            <line x1="18" y1="18" x2="15" y2="15" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
-            <circle cx="11" cy="11" r="6" fill="none" stroke="currentColor" strokeWidth="2"/>
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="currentColor"
+          >
+            <circle
+              cx="11"
+              cy="11"
+              r="7"
+              stroke="none"
+            />
+            <line
+              x1="18"
+              y1="18"
+              x2="15"
+              y2="15"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+            />
+            <circle
+              cx="11"
+              cy="11"
+              r="6"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+            />
           </svg>
         </NavigationButton>
       </div>
@@ -92,8 +131,47 @@ export const NavigationPanel: React.FC<NavigationPanelProps> = ({
           disabled={false}
           className="nav-button-prompt"
         >
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M4 19.5A2.5 2.5 0 0 0 6.5 22h11a2.5 2.5 0 0 0 2.5-2.5v-11A2.5 2.5 0 0 0 17.5 6H10.414l-2.707-2.707A.997.997 0 0 0 7 2H6.5A2.5 2.5 0 0 0 4 4.5v15zM6.5 4H8l3 3h6.5a.5.5 0 0 1 .5.5V10H6V4.5a.5.5 0 0 1 .5-.5zm13 5.5V19.5a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H8l3 3h7.5a.5.5 0 0 1 .5.5z"/>
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="currentColor"
+          >
+            <path d="M4 19.5A2.5 2.5 0 0 0 6.5 22h11a2.5 2.5 0 0 0 2.5-2.5v-11A2.5 2.5 0 0 0 17.5 6H10.414l-2.707-2.707A.997.997 0 0 0 7 2H6.5A2.5 2.5 0 0 0 4 4.5v15zM6.5 4H8l3 3h6.5a.5.5 0 0 1 .5.5V10H6V4.5a.5.5 0 0 1 .5-.5zm13 5.5V19.5a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H8l3 3h7.5a.5.5 0 0 1 .5.5z" />
+          </svg>
+        </NavigationButton>
+
+        {/* Theme button */}
+        <NavigationButton
+          onClick={onTheme}
+          title="Theme & Settings - Ctrl+T"
+          disabled={false}
+          className="nav-button-theme"
+        >
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="currentColor"
+          >
+            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10c1.29 0 2.5-.24 3.64-.68.2-.09.3-.28.3-.48 0-.2-.1-.39-.3-.48-.5-.22-.96-.5-1.36-.84-.2-.17-.2-.44 0-.61.17-.17.44-.17.61 0 .5.42 1.05.75 1.65.98.2.05.35.22.35.43 0 .2-.15.38-.35.43-1.14.44-2.35.66-3.6.66-5.52 0-10-4.48-10-10S6.48 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm0-14c-3.31 0-6 2.69-6 6s2.69 6 6 6 6-2.69 6-6-2.69-6-6-6zm0 10c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4z" />
+          </svg>
+        </NavigationButton>
+
+        {/* Smart Suggestions button */}
+        <NavigationButton
+          onClick={onSmartSuggestion}
+          title="Smart Suggestions - Ctrl+S"
+          disabled={false}
+          className="nav-button-smart"
+        >
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="currentColor"
+          >
+            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
           </svg>
         </NavigationButton>
 
@@ -128,5 +206,5 @@ export const NavigationPanel: React.FC<NavigationPanelProps> = ({
         totalMessages={userMessages.length}
       />
     </div>
-  )
-}
+  );
+};

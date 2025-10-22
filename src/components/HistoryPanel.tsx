@@ -1,103 +1,115 @@
-import React, { useState, useEffect } from 'react'
-import { UserMessage } from '../types'
-import { ExportService } from '../services/ExportService'
+import React, { useState, useEffect } from "react";
+import { UserMessage } from "../types";
+import { ExportService } from "../services/ExportService";
 
 interface HistoryPanelProps {
-  userMessages: UserMessage[]
-  isVisible: boolean
-  onClose: () => void
-  onMessageSelect: (index: number) => void
+  userMessages: UserMessage[];
+  isVisible: boolean;
+  onClose: () => void;
+  onMessageSelect: (index: number) => void;
 }
 
 interface MessageWithStats extends UserMessage {
-  wordCount: number
-  characterCount: number
-  estimatedTime: string
+  wordCount: number;
+  characterCount: number;
+  estimatedTime: string;
 }
 
 export const HistoryPanel: React.FC<HistoryPanelProps> = ({
   userMessages,
   isVisible,
   onClose,
-  onMessageSelect
+  onMessageSelect,
 }) => {
-  const [messagesWithStats, setMessagesWithStats] = useState<MessageWithStats[]>([])
-  const [sortBy, setSortBy] = useState<'index' | 'length' | 'words'>('index')
-  const [filterBy, setFilterBy] = useState<'all' | 'short' | 'medium' | 'long'>('all')
-  const [searchQuery, setSearchQuery] = useState('')
-  const [selectedMessage, setSelectedMessage] = useState<number | null>(null)
+  const [messagesWithStats, setMessagesWithStats] = useState<
+    MessageWithStats[]
+  >([]);
+  const [sortBy, setSortBy] = useState<"index" | "length" | "words">("index");
+  const [filterBy, setFilterBy] = useState<"all" | "short" | "medium" | "long">(
+    "all"
+  );
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedMessage, setSelectedMessage] = useState<number | null>(null);
 
-  const exportService = ExportService.getInstance()
+  const exportService = ExportService.getInstance();
 
   useEffect(() => {
     if (userMessages.length > 0) {
-      const stats = exportService.getConversationStats(userMessages)
-      const messages = userMessages.map(msg => ({
+      const stats = exportService.getConversationStats(userMessages);
+      const messages = userMessages.map((msg) => ({
         ...msg,
         wordCount: msg.text.split(/\s+/).length,
         characterCount: msg.text.length,
-        estimatedTime: formatEstimatedTime(msg.text.length)
-      }))
-      setMessagesWithStats(messages)
+        estimatedTime: formatEstimatedTime(msg.text.length),
+      }));
+      setMessagesWithStats(messages);
     }
-  }, [userMessages])
+  }, [userMessages]);
 
   const formatEstimatedTime = (charCount: number): string => {
     // Estimate reading time: ~200 characters per minute
-    const minutes = Math.max(1, Math.round(charCount / 200))
-    return `${minutes} phút`
-  }
+    const minutes = Math.max(1, Math.round(charCount / 200));
+    return `${minutes} phút`;
+  };
 
-  const getMessageLengthCategory = (charCount: number): 'short' | 'medium' | 'long' => {
-    if (charCount < 100) return 'short'
-    if (charCount < 500) return 'medium'
-    return 'long'
-  }
+  const getMessageLengthCategory = (
+    charCount: number
+  ): "short" | "medium" | "long" => {
+    if (charCount < 100) return "short";
+    if (charCount < 500) return "medium";
+    return "long";
+  };
 
   const filteredAndSortedMessages = messagesWithStats
-    .filter(msg => {
+    .filter((msg) => {
       // Filter by length category
-      if (filterBy !== 'all') {
-        const category = getMessageLengthCategory(msg.characterCount)
-        if (category !== filterBy) return false
+      if (filterBy !== "all") {
+        const category = getMessageLengthCategory(msg.characterCount);
+        if (category !== filterBy) return false;
       }
 
       // Filter by search query
       if (searchQuery.trim()) {
-        return msg.text.toLowerCase().includes(searchQuery.toLowerCase())
+        return msg.text.toLowerCase().includes(searchQuery.toLowerCase());
       }
 
-      return true
+      return true;
     })
     .sort((a, b) => {
       switch (sortBy) {
-        case 'index':
-          return a.index - b.index
-        case 'length':
-          return b.characterCount - a.characterCount
-        case 'words':
-          return b.wordCount - a.wordCount
+        case "index":
+          return a.index - b.index;
+        case "length":
+          return b.characterCount - a.characterCount;
+        case "words":
+          return b.wordCount - a.wordCount;
         default:
-          return 0
+          return 0;
       }
-    })
+    });
 
   const handleMessageClick = (message: MessageWithStats) => {
-    setSelectedMessage(message.index)
-    onMessageSelect(message.index)
-  }
+    setSelectedMessage(message.index);
+    onMessageSelect(message.index);
+  };
 
   const getLengthCategoryStats = () => {
-    const short = messagesWithStats.filter(msg => getMessageLengthCategory(msg.characterCount) === 'short').length
-    const medium = messagesWithStats.filter(msg => getMessageLengthCategory(msg.characterCount) === 'medium').length
-    const long = messagesWithStats.filter(msg => getMessageLengthCategory(msg.characterCount) === 'long').length
+    const short = messagesWithStats.filter(
+      (msg) => getMessageLengthCategory(msg.characterCount) === "short"
+    ).length;
+    const medium = messagesWithStats.filter(
+      (msg) => getMessageLengthCategory(msg.characterCount) === "medium"
+    ).length;
+    const long = messagesWithStats.filter(
+      (msg) => getMessageLengthCategory(msg.characterCount) === "long"
+    ).length;
 
-    return { short, medium, long }
-  }
+    return { short, medium, long };
+  };
 
-  const categoryStats = getLengthCategoryStats()
+  const categoryStats = getLengthCategoryStats();
 
-  if (!isVisible) return null
+  if (!isVisible) return null;
 
   return (
     <div className="history-panel">
@@ -178,7 +190,9 @@ export const HistoryPanel: React.FC<HistoryPanelProps> = ({
             <div className="history-empty">
               <div className="empty-icon">📭</div>
               <div className="empty-text">
-                {searchQuery ? 'Không tìm thấy tin nhắn nào' : 'Chưa có tin nhắn nào'}
+                {searchQuery
+                  ? "Không tìm thấy tin nhắn nào"
+                  : "Chưa có tin nhắn nào"}
               </div>
             </div>
           ) : (
@@ -186,7 +200,7 @@ export const HistoryPanel: React.FC<HistoryPanelProps> = ({
               <div
                 key={message.index}
                 className={`history-message-item ${
-                  selectedMessage === message.index ? 'selected' : ''
+                  selectedMessage === message.index ? "selected" : ""
                 } ${getMessageLengthCategory(message.characterCount)}`}
                 onClick={() => handleMessageClick(message)}
               >
@@ -194,9 +208,12 @@ export const HistoryPanel: React.FC<HistoryPanelProps> = ({
                   <div className="message-meta">
                     <span className="message-number">#{message.index + 1}</span>
                     <span className="message-category">
-                      {getMessageLengthCategory(message.characterCount) === 'short' && '📝'}
-                      {getMessageLengthCategory(message.characterCount) === 'medium' && '📄'}
-                      {getMessageLengthCategory(message.characterCount) === 'long' && '📚'}
+                      {getMessageLengthCategory(message.characterCount) ===
+                        "short" && "📝"}
+                      {getMessageLengthCategory(message.characterCount) ===
+                        "medium" && "📄"}
+                      {getMessageLengthCategory(message.characterCount) ===
+                        "long" && "📚"}
                     </span>
                     <span className="message-stats">
                       {message.characterCount} ký tự • {message.wordCount} từ
@@ -208,8 +225,7 @@ export const HistoryPanel: React.FC<HistoryPanelProps> = ({
                 <div className="message-preview">
                   {message.text.length > 150
                     ? `${message.text.substring(0, 150)}...`
-                    : message.text
-                  }
+                    : message.text}
                 </div>
 
                 {searchQuery && (
@@ -225,12 +241,13 @@ export const HistoryPanel: React.FC<HistoryPanelProps> = ({
 
       <div className="history-footer">
         <div className="history-info">
-          Hiển thị {filteredAndSortedMessages.length} / {userMessages.length} tin nhắn
+          Hiển thị {filteredAndSortedMessages.length} / {userMessages.length}{" "}
+          tin nhắn
         </div>
         <div className="history-shortcuts">
           <span>Click để chọn tin nhắn</span>
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
