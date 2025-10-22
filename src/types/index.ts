@@ -18,3 +18,29 @@ export interface SearchState {
   currentIndex: number
   showResults: boolean
 }
+
+// Prompt Management Types
+export interface Prompt {
+  id: string
+  title: string
+  content: string
+  category: string
+  createdAt: string
+  updatedAt: string
+  tags: string[]
+}
+
+export interface PromptCategory {
+  id: string
+  name: string
+  color: string
+}
+
+export interface PromptState {
+  prompts: Prompt[]
+  categories: PromptCategory[]
+  isVisible: boolean
+  searchQuery: string
+  selectedCategory: string
+  editingPrompt: Prompt | null
+}

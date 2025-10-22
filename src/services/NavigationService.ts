@@ -8,7 +8,8 @@ export class NavigationService {
     onCopy: () => void,
     onSearch?: () => void,
     onExport?: () => void,
-    onHistory?: () => void
+    onHistory?: () => void,
+    onPrompt?: () => void
   ): KeyboardShortcut[] {
     return [
       {
@@ -66,6 +67,12 @@ export class NavigationService {
         ctrlKey: true,
         action: onHistory,
         description: 'Open history panel'
+      }] : []),
+      ...(onPrompt ? [{
+        key: 'p',
+        ctrlKey: true,
+        action: onPrompt,
+        description: 'Open prompt manager'
       }] : [])
     ]
   }

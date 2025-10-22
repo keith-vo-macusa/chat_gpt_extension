@@ -12,6 +12,7 @@ interface NavigationPanelProps {
   onSearch: () => void
   onExport: () => void
   onHistory: () => void
+  onPrompt: () => void
 }
 
 export const NavigationPanel: React.FC<NavigationPanelProps> = ({
@@ -22,7 +23,8 @@ export const NavigationPanel: React.FC<NavigationPanelProps> = ({
   onCopy,
   onSearch,
   onExport,
-  onHistory
+  onHistory,
+  onPrompt
 }) => {
   return (
     <div className="chatgpt-message-navigator-panel">
@@ -73,6 +75,16 @@ export const NavigationPanel: React.FC<NavigationPanelProps> = ({
 
       {/* Feature buttons */}
       <div className="feature-buttons-group">
+        {/* Prompt button */}
+        <NavigationButton
+          onClick={onPrompt}
+          title="Prompt Manager - Ctrl+P"
+          disabled={false}
+          className="nav-button-prompt"
+        >
+          📝
+        </NavigationButton>
+
         {/* Export button */}
         <NavigationButton
           onClick={onExport}

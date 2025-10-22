@@ -4,6 +4,7 @@ import { SearchPanel } from './SearchPanel'
 import { SearchResults } from './SearchResults'
 import { ExportPanel } from './ExportPanel'
 import { HistoryPanel } from './HistoryPanel'
+import PromptPanel from './PromptPanel'
 import { useMessageNavigation } from '../hooks/useMessageNavigation'
 import { SearchResult } from '../services/SearchService'
 
@@ -14,6 +15,7 @@ const MessageNavigator: React.FC = () => {
   const [showSearchResults, setShowSearchResults] = useState(false)
   const [isExportVisible, setIsExportVisible] = useState(false)
   const [isHistoryVisible, setIsHistoryVisible] = useState(false)
+  const [isPromptVisible, setIsPromptVisible] = useState(false)
 
   const handleSearch = () => {
     setIsSearchVisible(true)
@@ -27,6 +29,10 @@ const MessageNavigator: React.FC = () => {
     setIsHistoryVisible(true)
   }
 
+  const handlePrompt = () => {
+    setIsPromptVisible(true)
+  }
+
   const {
     userMessages,
     currentIndex,
@@ -34,7 +40,7 @@ const MessageNavigator: React.FC = () => {
     goToNext,
     copyCurrentMessage,
     goToMessage,
-  } = useMessageNavigation(handleSearch, handleExport, handleHistory)
+  } = useMessageNavigation(handleSearch, handleExport, handleHistory, handlePrompt)
 
   const handleSearchClose = () => {
     setIsSearchVisible(false)
@@ -76,6 +82,7 @@ const MessageNavigator: React.FC = () => {
         onSearch={handleSearch}
         onExport={handleExport}
         onHistory={handleHistory}
+        onPrompt={handlePrompt}
       />
 
       {isSearchVisible && (
@@ -110,6 +117,13 @@ const MessageNavigator: React.FC = () => {
           isVisible={isHistoryVisible}
           onClose={() => setIsHistoryVisible(false)}
           onMessageSelect={handleHistoryMessageSelect}
+        />
+      )}
+
+      {isPromptVisible && (
+        <PromptPanel
+          isVisible={isPromptVisible}
+          onClose={() => setIsPromptVisible(false)}
         />
       )}
     </>
