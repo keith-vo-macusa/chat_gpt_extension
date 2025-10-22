@@ -1,6 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { Theme, CustomTheme, LayoutSettings, PersonalizationSettings } from '../types';
+import {
+  Theme,
+  CustomTheme,
+  LayoutSettings,
+  PersonalizationSettings,
+  NotificationSettings,
+} from '../types';
 import { ThemeService } from '../services/ThemeService';
+import { NotificationService } from '../services/NotificationService';
 
 interface ThemePanelProps {
   isVisible: boolean;
@@ -17,7 +24,12 @@ const ThemePanel: React.FC<ThemePanelProps> = ({ isVisible, onClose }) => {
   const [personalization, setPersonalization] = useState<PersonalizationSettings>(
     ThemeService.getPersonalizationSettings()
   );
-  const [activeTab, setActiveTab] = useState<'themes' | 'layout' | 'personalization'>('themes');
+  const [notificationSettings, setNotificationSettings] = useState<NotificationSettings>(
+    NotificationService.getSettings()
+  );
+  const [activeTab, setActiveTab] = useState<
+    'themes' | 'layout' | 'personalization' | 'notifications'
+  >('themes');
   const [showCreateTheme, setShowCreateTheme] = useState(false);
   const [customThemeForm, setCustomThemeForm] = useState({
     name: '',
@@ -48,6 +60,7 @@ const ThemePanel: React.FC<ThemePanelProps> = ({ isVisible, onClose }) => {
     setCurrentTheme(ThemeService.getCurrentTheme());
     setLayoutSettings(ThemeService.getLayoutSettings());
     setPersonalization(ThemeService.getPersonalizationSettings());
+    setNotificationSettings(NotificationService.getSettings());
   };
 
   const handleThemeChange = (themeId: string) => {
@@ -67,6 +80,24 @@ const ThemePanel: React.FC<ThemePanelProps> = ({ isVisible, onClose }) => {
     const updatedSettings = { ...personalization, ...newSettings };
     setPersonalization(updatedSettings);
     ThemeService.setPersonalizationSettings(updatedSettings);
+  };
+
+  const handleNotificationChange = (newSettings: Partial<NotificationSettings>) => {
+    const updatedSettings = { ...notificationSettings, ...newSettings };
+    setNotificationSettings(updatedSettings);
+    NotificationService.updateSettings(updatedSettings);
+  };
+
+  const handleTestNotification = async () => {
+    try {
+      await NotificationService.showTestNotification();
+    } catch (error) {
+      alert('Error showing test notification: ' + (error as Error).message);
+    }
+  };
+
+  const handleDebugNotification = () => {
+    NotificationService.debugCurrentState();
   };
 
   const handleCreateCustomTheme = () => {
@@ -156,6 +187,12 @@ const ThemePanel: React.FC<ThemePanelProps> = ({ isVisible, onClose }) => {
               onClick={() => setActiveTab('personalization')}
             >
               Personal
+            </button>
+            <button
+              className={`theme-tab ${activeTab === 'notifications' ? 'active' : ''}`}
+              onClick={() => setActiveTab('notifications')}
+            >
+              Notifications
             </button>
           </div>
 
@@ -417,6 +454,125 @@ const ThemePanel: React.FC<ThemePanelProps> = ({ isVisible, onClose }) => {
                     />
                     Show welcome message
                   </label>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Notifications Tab */}
+          {activeTab === 'notifications' && (
+            <div className="theme-tab-content">
+              <div className="notifications-section">
+                <h3>Browser Notifications</h3>
+
+                <div className="setting-group">
+                  <label className="checkbox-label">
+                    <input
+                      type="checkbox"
+                      checked={notificationSettings.enabled}
+                      onChange={(e) => handleNotificationChange({ enabled: e.target.checked })}
+                    />
+                    Enable notifications when ChatGPT responds
+                  </label>
+                </div>
+
+                <div className="setting-group">
+                  <label className="checkbox-label">
+                    <input
+                      type="checkbox"
+                      checked={notificationSettings.sound}
+                      onChange={(e) => handleNotificationChange({ sound: e.target.checked })}
+                    />
+                    Play sound with notification
+                  </label>
+                </div>
+
+                <div className="setting-group">
+                  <label className="checkbox-label">
+                    <input
+                      type="checkbox"
+                      checked={notificationSettings.vibration}
+                      onChange={(e) => handleNotificationChange({ vibration: e.target.checked })}
+                    />
+                    Vibrate device (mobile only)
+                  </label>
+                </div>
+
+                <div className="setting-group">
+                  <label className="checkbox-label">
+                    <input
+                      type="checkbox"
+                      checked={notificationSettings.showPreview}
+                      onChange={(e) => handleNotificationChange({ showPreview: e.target.checked })}
+                    />
+                    Show response preview in notification
+                  </label>
+                </div>
+
+                <div className="setting-group">
+                  <label>Custom notification message</label>
+                  <input
+                    type="text"
+                    value={notificationSettings.customMessage}
+                    onChange={(e) => handleNotificationChange({ customMessage: e.target.value })}
+                    className="form-input"
+                    placeholder="Enter custom message..."
+                  />
+                </div>
+
+                <div className="setting-group">
+                  <label className="checkbox-label">
+                    <input
+                      type="checkbox"
+                      checked={notificationSettings.autoClose}
+                      onChange={(e) => handleNotificationChange({ autoClose: e.target.checked })}
+                    />
+                    Auto-close notification
+                  </label>
+                </div>
+
+                {notificationSettings.autoClose && (
+                  <div className="setting-group">
+                    <label>Auto-close delay: {notificationSettings.closeDelay} seconds</label>
+                    <input
+                      type="range"
+                      min="1"
+                      max="30"
+                      step="1"
+                      value={notificationSettings.closeDelay}
+                      onChange={(e) =>
+                        handleNotificationChange({ closeDelay: parseInt(e.target.value) })
+                      }
+                      className="form-range"
+                    />
+                  </div>
+                )}
+
+                <div className="setting-group">
+                  <button
+                    className="test-notification-btn"
+                    onClick={handleTestNotification}
+                    disabled={!notificationSettings.enabled}
+                  >
+                    🔔 Test Notification
+                  </button>
+                  <button
+                    className="debug-notification-btn"
+                    onClick={handleDebugNotification}
+                  >
+                    🐛 Debug Status
+                  </button>
+                </div>
+
+                <div className="notification-status">
+                  <p>
+                    <strong>Status:</strong>{' '}
+                    {NotificationService.isSupported() ? '✅ Supported' : '❌ Not supported'}
+                  </p>
+                  <p>
+                    <strong>Permission:</strong>{' '}
+                    {NotificationService.hasPermission() ? '✅ Granted' : '❌ Denied'}
+                  </p>
                 </div>
               </div>
             </div>

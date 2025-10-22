@@ -2574,3 +2574,70 @@
   margin: 0;
   font-size: 14px;
 }
+
+/* Notification Settings Styles */
+.test-notification-btn {
+  padding: 12px 20px;
+  background: var(--theme-accent, #10b981);
+  color: white;
+  border: none;
+  border-radius: var(--theme-border-radius, 8px);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.test-notification-btn:hover:not(:disabled) {
+  background: var(--theme-success, #10b981);
+  transform: translateY(-1px);
+}
+
+.test-notification-btn:disabled {
+  background: var(--theme-border, #e5e7eb);
+  color: var(--theme-text-secondary, #6b7280);
+  cursor: not-allowed;
+}
+
+.debug-notification-btn {
+  padding: 12px 20px;
+  background: var(--theme-warning, #f59e0b);
+  color: white;
+  border: none;
+  border-radius: var(--theme-border-radius, 8px);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  margin-left: 8px;
+}
+
+.debug-notification-btn:hover {
+  background: #d97706;
+  transform: translateY(-1px);
+}
+
+.notification-status {
+  background: var(--theme-surface, #f9fafb);
+  border: 1px solid var(--theme-border, #e5e7eb);
+  border-radius: var(--theme-border-radius, 8px);
+  padding: 16px;
+  margin-top: 20px;
+}
+
+.notification-status p {
+  margin: 0 0 8px 0;
+  font-size: 14px;
+  color: var(--theme-text, #111827);
+}
+
+.notification-status p:last-child {
+  margin-bottom: 0;
+}
+
+.notifications-section h3 {
+  margin: 0 0 20px 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--theme-text, #111827);
+}

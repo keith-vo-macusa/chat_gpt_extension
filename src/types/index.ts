@@ -115,3 +115,14 @@ export interface SmartTemplate {
   variables: string[]
   usage: string
 }
+
+// Notification Types
+export interface NotificationSettings {
+  enabled: boolean
+  sound: boolean
+  vibration: boolean
+  showPreview: boolean
+  customMessage: string
+  autoClose: boolean
+  closeDelay: number
+}

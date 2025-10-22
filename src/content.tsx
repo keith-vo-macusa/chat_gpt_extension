@@ -2,6 +2,7 @@ import React from 'react';
 import { createRoot } from 'react-dom/client';
 import MessageNavigator from './components/MessageNavigator';
 import { ThemeService } from './services/ThemeService';
+import { NotificationService } from './services/NotificationService';
 import './content.css';
 
 // Wait for DOM to be ready
@@ -19,6 +20,17 @@ const initExtension = () => {
 
   // Initialize theme system
   ThemeService.initialize();
+
+  // Initialize notification system
+  NotificationService.initialize().then((success) => {
+    if (success) {
+      console.log('Notification service initialized successfully');
+      // Start monitoring ChatGPT responses
+      NotificationService.startMonitoring();
+    } else {
+      console.log('Notification service initialization failed');
+    }
+  });
 
   // Remove existing panel if any
   const existingPanel = document.getElementById('chatgpt-message-navigator');
