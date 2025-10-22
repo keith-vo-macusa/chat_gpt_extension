@@ -15,6 +15,7 @@ interface NavigationPanelProps {
   onPrompt: () => void;
   onTheme: () => void;
   onSmartSuggestion: () => void;
+  onCodeMinifier: () => void;
 }
 
 export const NavigationPanel: React.FC<NavigationPanelProps> = ({
@@ -29,6 +30,7 @@ export const NavigationPanel: React.FC<NavigationPanelProps> = ({
   onPrompt,
   onTheme,
   onSmartSuggestion,
+  onCodeMinifier,
 }) => {
   return (
     <div className="chatgpt-message-navigator-panel">
@@ -172,6 +174,24 @@ export const NavigationPanel: React.FC<NavigationPanelProps> = ({
             fill="currentColor"
           >
             <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+          </svg>
+        </NavigationButton>
+
+        {/* Code Minifier button */}
+        <NavigationButton
+          onClick={onCodeMinifier}
+          title="Code Minifier - Ctrl+M"
+          disabled={false}
+          className="nav-button-minifier"
+        >
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="currentColor"
+          >
+            <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+            <path d="M8 8h8M8 12h8M8 16h5" />
           </svg>
         </NavigationButton>
 

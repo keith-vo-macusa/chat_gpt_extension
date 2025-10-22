@@ -7,6 +7,7 @@ import { HistoryPanel } from './HistoryPanel';
 import PromptPanel from './PromptPanel';
 import ThemePanel from './ThemePanel';
 import SmartSuggestionPanel from './SmartSuggestionPanel';
+import CodeMinifierPanel from './CodeMinifierPanel';
 import { useMessageNavigation } from '../hooks/useMessageNavigation';
 import { SearchResult } from '../services/SearchService';
 
@@ -20,6 +21,7 @@ const MessageNavigator: React.FC = () => {
   const [isPromptVisible, setIsPromptVisible] = useState(false);
   const [isThemeVisible, setIsThemeVisible] = useState(false);
   const [isSmartSuggestionVisible, setIsSmartSuggestionVisible] = useState(false);
+  const [isCodeMinifierVisible, setIsCodeMinifierVisible] = useState(false);
   const [suggestionContext, setSuggestionContext] = useState('');
 
   const handleSearch = () => {
@@ -52,6 +54,25 @@ const MessageNavigator: React.FC = () => {
     setIsSmartSuggestionVisible(true);
   };
 
+  const handleCodeMinifier = () => {
+    // Get selected text or current input content
+    const selection = window.getSelection();
+    let content = '';
+
+    if (selection && selection.toString().trim().length > 0) {
+      content = selection.toString();
+    } else {
+      // Get current context from ChatGPT input
+      const inputElement = document.querySelector(
+        'textarea[placeholder*="Message"], textarea[placeholder*="message"], div[contenteditable="true"]'
+      ) as HTMLTextAreaElement | HTMLInputElement | HTMLElement;
+      content = inputElement ? inputElement.value || inputElement.textContent || '' : '';
+    }
+
+    setSuggestionContext(content);
+    setIsCodeMinifierVisible(true);
+  };
+
   const { userMessages, currentIndex, goToPrevious, goToNext, copyCurrentMessage, goToMessage } =
     useMessageNavigation(
       handleSearch,
@@ -59,7 +80,8 @@ const MessageNavigator: React.FC = () => {
       handleHistory,
       handlePrompt,
       handleTheme,
-      handleSmartSuggestion
+      handleSmartSuggestion,
+      handleCodeMinifier
     );
 
   const handleSearchClose = () => {
@@ -105,6 +127,7 @@ const MessageNavigator: React.FC = () => {
         onPrompt={handlePrompt}
         onTheme={handleTheme}
         onSmartSuggestion={handleSmartSuggestion}
+        onCodeMinifier={handleCodeMinifier}
       />
 
       {isSearchVisible && (
@@ -161,6 +184,14 @@ const MessageNavigator: React.FC = () => {
           isVisible={isSmartSuggestionVisible}
           onClose={() => setIsSmartSuggestionVisible(false)}
           context={suggestionContext}
+        />
+      )}
+
+      {isCodeMinifierVisible && (
+        <CodeMinifierPanel
+          isVisible={isCodeMinifierVisible}
+          onClose={() => setIsCodeMinifierVisible(false)}
+          initialContent={suggestionContext}
         />
       )}
     </>

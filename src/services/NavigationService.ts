@@ -11,7 +11,8 @@ export class NavigationService {
     onHistory?: () => void,
     onPrompt?: () => void,
     onTheme?: () => void,
-    onSmartSuggestion?: () => void
+    onSmartSuggestion?: () => void,
+    onCodeMinifier?: () => void
   ): KeyboardShortcut[] {
     return [
       {
@@ -87,6 +88,12 @@ export class NavigationService {
         ctrlKey: true,
         action: onSmartSuggestion,
         description: 'Open smart suggestions'
+      }] : []),
+      ...(onCodeMinifier ? [{
+        key: 'm',
+        ctrlKey: true,
+        action: onCodeMinifier,
+        description: 'Open code minifier'
       }] : [])
     ]
   }
