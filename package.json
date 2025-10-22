@@ -9,6 +9,7 @@
     "build:content": "vite build --config vite.config.ts",
     "build:popup": "vite build --config vite.popup.config.ts",
     "build:unified": "npm run build:content && npm run build:popup",
+    "build:crx": "npm run build && crx3 dist -o chatgpt-message-navigator.crx && crx3 dist -p chatgpt-message-navigator.pem -o chatgpt-message-navigator-with-key.crx",
     "preview": "vite preview",
     "prepare": "husky install"
   },
