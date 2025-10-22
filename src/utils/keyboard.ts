@@ -21,6 +21,16 @@ export const createKeyboardHandler = (shortcuts: KeyboardShortcut[]) => {
       const altMatch = !!shortcut.altKey === event.altKey
 
       if (keyMatch && ctrlMatch && shiftMatch && altMatch) {
+        // Special handling for copy shortcut (Ctrl+C)
+        if (pressedKey === 'c' && ctrl) {
+          // Check if there's selected text
+          const selection = window.getSelection()
+          if (selection && selection.toString().trim().length > 0) {
+            // Let the browser handle copying selected text
+            return false
+          }
+        }
+
         event.preventDefault()
         event.stopPropagation()
         shortcut.action()
