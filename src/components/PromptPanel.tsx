@@ -107,7 +107,10 @@ const PromptPanel: React.FC<PromptPanelProps> = ({ isVisible, onClose }) => {
   }
 
   const handleUsePrompt = (prompt: Prompt) => {
-    PromptService.injectPromptToInput(prompt)
+    const success = PromptService.injectPromptToInput(prompt)
+    if (success) {
+      onClose() // Đóng modal sau khi inject thành công
+    }
   }
 
   const filteredPrompts = PromptService.searchPrompts(searchQuery, selectedCategory)
