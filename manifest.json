@@ -1,0 +1,22 @@
+{
+  "manifest_version": 3,
+  "name": "ChatGPT Message Navigator",
+  "version": "1.0.0",
+  "description": "Navigate between your messages in ChatGPT conversations",
+  "permissions": ["activeTab", "scripting"],
+  "host_permissions": ["https://chat.openai.com/*", "https://chatgpt.com/*"],
+  "content_scripts": [
+    {
+      "matches": ["https://chat.openai.com/*", "https://chatgpt.com/*"],
+      "js": ["content.js"],
+      "css": ["content.css"],
+      "run_at": "document_end"
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": ["*"],
+      "matches": ["https://chat.openai.com/*", "https://chatgpt.com/*"]
+    }
+  ]
+}

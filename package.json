@@ -1,0 +1,25 @@
+{
+  "name": "chatgpt-message-navigator",
+  "version": "1.0.0",
+  "description": "Chrome extension to navigate between user messages in ChatGPT",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "node build.cjs",
+    "build:content": "vite build --config vite.config.ts",
+    "build:popup": "vite build --config vite.popup.config.ts",
+    "build:unified": "npm run build:content && npm run build:popup",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.2.15",
+    "@types/react-dom": "^18.2.7",
+    "@vitejs/plugin-react": "^4.0.3",
+    "typescript": "^5.0.2",
+    "vite": "^4.4.5"
+  }
+}

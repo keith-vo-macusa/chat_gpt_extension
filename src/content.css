@@ -1,0 +1,227 @@
+.chatgpt-message-navigator-panel {
+  position: fixed;
+  top: 50%;
+  right: 20px;
+  z-index: 10000;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+.nav-buttons-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.feature-buttons-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.nav-button-floating {
+  background: #10a37f;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 48px;
+  height: 48px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(16, 163, 127, 0.25);
+  backdrop-filter: blur(10px);
+  position: relative;
+  overflow: hidden;
+}
+
+.nav-button-floating::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    45deg,
+    transparent 30%,
+    rgba(255, 255, 255, 0.2) 50%,
+    transparent 70%
+  );
+  transform: translateX(-100%);
+  transition: transform 0.6s;
+}
+
+.nav-button-floating:hover::before {
+  transform: translateX(100%);
+}
+
+.nav-button-floating:hover {
+  background: #0d8a6b;
+  transform: scale(1.05) translateY(-2px);
+  box-shadow: 0 8px 20px rgba(16, 163, 127, 0.35);
+}
+
+.nav-button-floating:active {
+  transform: scale(0.95);
+  transition: transform 0.1s;
+}
+
+.nav-button-floating:disabled {
+  background: #e0e0e0;
+  color: #9e9e9e;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.nav-button-floating:disabled:hover {
+  background: #e0e0e0;
+  transform: none;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.nav-button-floating:disabled::before {
+  display: none;
+}
+
+.nav-button-copy {
+  background: #6c757d;
+  font-size: 14px;
+}
+
+.nav-button-copy:hover {
+  background: #5a6268;
+}
+
+.message-counter-floating {
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  border-radius: 16px;
+  padding: 6px 10px;
+  font-size: 12px;
+  font-weight: 600;
+  text-align: center;
+  min-width: 50px;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  }
+  50% {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2), 0 0 0 4px rgba(16, 163, 127, 0.1);
+  }
+  100% {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  }
+}
+
+.highlighted-message {
+  background: rgba(255, 193, 7, 0.15) !important;
+  border: 2px solid #ffc107 !important;
+  border-radius: 8px !important;
+  transition: all 0.3s ease !important;
+  box-shadow: 0 0 10px rgba(255, 193, 7, 0.3) !important;
+}
+
+/* Specific styling for message bubbles */
+.user-message-bubble-color.highlighted-message {
+  background: rgba(255, 193, 7, 0.2) !important;
+  border: 2px solid #ffc107 !important;
+  box-shadow: 0 0 15px rgba(255, 193, 7, 0.4) !important;
+}
+
+/* Copy button inside message bubble */
+.chatgpt-copy-button {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 6px;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  opacity: 0;
+  transform: scale(0.8);
+  z-index: 10;
+  color: #666;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.user-message-bubble-color:hover .chatgpt-copy-button {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.chatgpt-copy-button:hover {
+  background: rgba(255, 255, 255, 1);
+  color: #10a37f;
+  transform: scale(1.1);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.chatgpt-copy-button:active {
+  transform: scale(0.95);
+}
+
+/* Dark mode support for copy button */
+@media (prefers-color-scheme: dark) {
+  .chatgpt-copy-button {
+    background: rgba(32, 33, 35, 0.9);
+    border-color: rgba(255, 255, 255, 0.1);
+    color: #ececf1;
+  }
+
+  .chatgpt-copy-button:hover {
+    background: rgba(32, 33, 35, 1);
+    color: #10a37f;
+  }
+}
+
+/* Bookmark styles removed */
+
+/* Loading indicator */
+.loading-indicator {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .chatgpt-copy-button {
+    background: rgba(32, 33, 35, 0.9);
+    border-color: rgba(255, 255, 255, 0.1);
+    color: #ececf1;
+  }
+
+  .chatgpt-copy-button:hover {
+    background: rgba(32, 33, 35, 1);
+    color: #10a37f;
+  }
+}
